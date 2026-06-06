@@ -504,6 +504,9 @@ function doSync(){
   pushData();
 }
 
+const PROXY='https://api.allorigins.win/raw?url=';
+function gistUrl(gistId){return encodeURIComponent(`https://api.github.com/gists/${gistId}`);}
+
 async function pushData(){
   const token=getToken();
   if(!token){showToast('⚠️ ยังไม่ได้ตั้งค่า Token');return;}
@@ -513,19 +516,23 @@ async function pushData(){
   const gistId=getGistId();
   try{
     let res,data;
+    const body=JSON.stringify({files:{'budget-data.json':{content}}});
     if(gistId){
-      res=await fetch(`https://api.github.com/gists/${gistId}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({files:{'budget-data.json':{content}}})});
+      res=await fetch(`https://api.allorigins.win/raw?url=${gistUrl(gistId)}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body});
     }else{
-      res=await fetch('https://api.github.com/gists',{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({description:'Budget App Data',public:false,files:{'budget-data.json':{content}}})});
+      res=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.github.com/gists')}`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({description:'Budget App Data',public:false,files:{'budget-data.json':{content}}})});
+    }
+    if(!res.ok){
+      const txt=await res.text();
+      throw new Error(txt||'HTTP '+res.status);
     }
     data=await res.json();
     if(data.id){localStorage.setItem('gh_gist_id',data.id);document.getElementById('s-gistid').value=data.id;}
-    if(!res.ok)throw new Error(data.message||'Error');
     localStorage.setItem('sync_last',new Date().toLocaleString('th-TH'));
     setSyncBtnState('ok','Sync แล้ว ✓');
     showToast('☁️ อัปโหลดสำเร็จ!');
     renderSyncStatus();
-  }catch(err){setSyncBtnState('error','Sync ล้มเหลว');showToast('❌ Error: '+err.message);}
+  }catch(err){setSyncBtnState('error','Sync ล้มเหลว');showToast('❌ '+err.message);}
 }
 
 async function pullData(){
@@ -533,19 +540,19 @@ async function pullData(){
   if(!token||!gistId){showToast('⚠️ ต้องมี Token และ Gist ID ก่อน');return;}
   setSyncBtnState('syncing','กำลังดาวน์โหลด...');
   try{
-    const res=await fetch(`https://api.github.com/gists/${gistId}`,{headers:{'Authorization':`token ${token}`}});
+    const res=await fetch(`https://api.allorigins.win/raw?url=${gistUrl(gistId)}`,{headers:{'Authorization':`token ${token}`,'X-Requested-With':'XMLHttpRequest'}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
-    if(!res.ok)throw new Error(data.message||'Error');
-    const content=data.files['budget-data.json']?.content;
+    const content=data.files?.['budget-data.json']?.content;
     if(!content)throw new Error('ไม่พบข้อมูล');
     const payload=JSON.parse(content);
     if(payload.entries){entries=payload.entries;localStorage.setItem('mybook_v3',JSON.stringify(entries));}
     if(payload.cats){CATS=payload.cats;saveCats(CATS);buildMainCats();}
     localStorage.setItem('sync_last',new Date().toLocaleString('th-TH'));
     refresh();setSyncBtnState('ok','Sync แล้ว ✓');
-    showToast('📥 ดาวน์โหลดสำเร็จ! ข้อมูลอัปเดตแล้ว');
+    showToast('📥 ดาวน์โหลดสำเร็จ!');
     renderSyncStatus();
-  }catch(err){setSyncBtnState('error','Sync ล้มเหลว');showToast('❌ Error: '+err.message);}
+  }catch(err){setSyncBtnState('error','Sync ล้มเหลว');showToast('❌ '+err.message);}
 }
 
 function setSyncBtnState(state,text){
