@@ -328,34 +328,31 @@ select.finp option{background:var(--white);color:var(--text)}
 
   <div class="sync-setup">
     <div class="ftitle">☁️ ตั้งค่า Sync คอม ↔ มือถือ</div>
-
     <div id="sync-status-display"></div>
 
-    <!-- คำแนะนำ step by step -->
     <div class="step-box" id="setup-guide">
-      <div class="step-box-title">📋 วิธีตั้งค่าครั้งแรก (ทำแค่ครั้งเดียว)</div>
-      <div class="step-item"><div class="step-circle">1</div><div>ไปที่ <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a></div></div>
-      <div class="step-item"><div class="step-circle">2</div><div>ตั้งชื่อ Note: <strong>budget-sync</strong> &nbsp;|&nbsp; Expiration: <strong>No expiration</strong></div></div>
-      <div class="step-item"><div class="step-circle">3</div><div>เลือก scope: ✅ <strong>gist</strong> (แค่นี้พอ) แล้วกด Generate token</div></div>
-      <div class="step-item"><div class="step-circle">4</div><div>คัดลอก token (ขึ้นต้นด้วย <code style="background:#E6F1FB;padding:1px 5px;border-radius:4px;font-size:11px">ghp_</code>) วางในช่องด้านล่าง</div></div>
-      <div class="step-item"><div class="step-circle">5</div><div>กด บันทึกและ Sync ครั้งแรก → ทำซ้ำขั้นตอนนี้บนมือถือด้วย</div></div>
+      <div class="step-box-title">📋 วิธีตั้งค่าครั้งแรก — ใช้ JSONbin.io (ฟรี ไม่มีปัญหา)</div>
+      <div class="step-item"><div class="step-circle">1</div><div>ไปที่ <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> → กด <strong>Sign Up</strong> (ฟรี)</div></div>
+      <div class="step-item"><div class="step-circle">2</div><div>เข้า Dashboard → กด <strong>API Keys</strong> → คัดลอก <strong>Secret Access Key</strong></div></div>
+      <div class="step-item"><div class="step-circle">3</div><div>วาง Key ในช่องด้านล่าง → กด <strong>บันทึกและ Sync ครั้งแรก</strong> → ระบบสร้าง Bin อัตโนมัติ</div></div>
+      <div class="step-item"><div class="step-circle">4</div><div>คัดลอก <strong>Bin ID</strong> ที่ได้ → ไปทำซ้ำบนมือถือ ใส่ทั้ง Key และ Bin ID เดียวกัน</div></div>
     </div>
 
     <div class="setting-row">
-      <div class="setting-label">🔑 GitHub Token</div>
-      <input class="finp" type="password" id="s-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-      <div class="setting-desc">Token ใช้เข้า GitHub Gist เพื่อเก็บข้อมูล · เก็บในเครื่องเท่านั้น ไม่ส่งไปไหน</div>
+      <div class="setting-label">🔑 JSONbin Secret Key</div>
+      <input class="finp" type="password" id="s-apikey" placeholder="$2b$10$xxxxxxxxxxxxxxxxxxxx">
+      <div class="setting-desc">Secret Access Key จาก jsonbin.io · เก็บในเครื่องเท่านั้น ไม่ส่งไปไหน</div>
     </div>
 
     <div class="setting-row">
-      <div class="setting-label">📎 Gist ID (กรอกหลัง Sync ครั้งแรกแล้ว ถ้าต้องการใช้หลายเครื่อง)</div>
-      <input class="finp" type="text" id="s-gistid" placeholder="ว่างไว้ = สร้างใหม่อัตโนมัติ">
-      <div class="setting-desc">เครื่องแรก: ว่างไว้ กด Sync แล้วระบบสร้างให้ · เครื่องที่ 2: คัดลอก Gist ID จากเครื่องแรกมาวาง</div>
+      <div class="setting-label">📎 Bin ID (กรอกหลัง Sync ครั้งแรก เพื่อใช้หลายเครื่อง)</div>
+      <input class="finp" type="text" id="s-binid" placeholder="ว่างไว้ = สร้างใหม่อัตโนมัติ">
+      <div class="setting-desc">เครื่องแรก: ว่างไว้ กด Sync ระบบสร้างให้ → คัดลอก Bin ID ไปใส่เครื่องที่ 2</div>
     </div>
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
       <button class="save-btn" onclick="saveToken()">💾 บันทึกและ Sync ครั้งแรก</button>
-      <button class="danger-btn" onclick="clearToken()">🗑️ ลบ Token</button>
+      <button class="danger-btn" onclick="clearToken()">🗑️ ลบการตั้งค่า</button>
     </div>
   </div>
 
@@ -494,40 +491,38 @@ function getGistId(){return localStorage.getItem('gh_gist_id')||'';}
 function updateSyncBtn(){
   const btn=document.getElementById('sync-btn');
   const lbl=document.getElementById('sync-label');
-  const token=getToken();
-  if(!token){btn.className='sync-btn no-token';lbl.textContent='ตั้งค่า Sync';}
+  const key=getApiKey();
+  if(!key){btn.className='sync-btn no-token';lbl.textContent='ตั้งค่า Sync';}
   else{btn.className='sync-btn';lbl.textContent='Sync ☁️';}
 }
 
 function doSync(){
-  if(!getToken()){goTab('sync',document.querySelectorAll('.tab')[5]);return;}
+  if(!getApiKey()){goTab('sync',document.querySelectorAll('.tab')[5]);return;}
   pushData();
 }
 
-const PROXY='https://api.allorigins.win/raw?url=';
-function gistUrl(gistId){return encodeURIComponent(`https://api.github.com/gists/${gistId}`);}
+// ===== JSONBIN SYNC (ไม่มีปัญหา CORS) =====
+const JSONBIN='https://api.jsonbin.io/v3';
+function getApiKey(){return localStorage.getItem('jb_apikey')||'';}
+function getBinId(){return localStorage.getItem('jb_binid')||'';}
 
 async function pushData(){
-  const token=getToken();
-  if(!token){showToast('⚠️ ยังไม่ได้ตั้งค่า Token');return;}
+  const key=getApiKey();
+  if(!key){showToast('⚠️ ยังไม่ได้ตั้งค่า API Key');return;}
   setSyncBtnState('syncing','กำลังอัปโหลด...');
   const payload={entries:JSON.parse(localStorage.getItem('mybook_v3')||'[]'),cats:JSON.parse(localStorage.getItem('cats_v2')||'{}'),updated:new Date().toISOString()};
-  const content=JSON.stringify(payload);
-  const gistId=getGistId();
   try{
+    const binId=getBinId();
     let res,data;
-    const body=JSON.stringify({files:{'budget-data.json':{content}}});
-    if(gistId){
-      res=await fetch(`https://api.allorigins.win/raw?url=${gistUrl(gistId)}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body});
+    if(binId){
+      res=await fetch(`${JSONBIN}/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':key},body:JSON.stringify(payload)});
     }else{
-      res=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.github.com/gists')}`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({description:'Budget App Data',public:false,files:{'budget-data.json':{content}}})});
-    }
-    if(!res.ok){
-      const txt=await res.text();
-      throw new Error(txt||'HTTP '+res.status);
+      res=await fetch(`${JSONBIN}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'budget-app','X-Bin-Private':'true'},body:JSON.stringify(payload)});
     }
     data=await res.json();
-    if(data.id){localStorage.setItem('gh_gist_id',data.id);document.getElementById('s-gistid').value=data.id;}
+    if(!res.ok)throw new Error(data.message||'HTTP '+res.status);
+    const id=data.metadata?.id||data.record?.metadata?.id;
+    if(id){localStorage.setItem('jb_binid',id);document.getElementById('s-binid').value=id;}
     localStorage.setItem('sync_last',new Date().toLocaleString('th-TH'));
     setSyncBtnState('ok','Sync แล้ว ✓');
     showToast('☁️ อัปโหลดสำเร็จ!');
@@ -536,16 +531,15 @@ async function pushData(){
 }
 
 async function pullData(){
-  const token=getToken();const gistId=getGistId();
-  if(!token||!gistId){showToast('⚠️ ต้องมี Token และ Gist ID ก่อน');return;}
+  const key=getApiKey();const binId=getBinId();
+  if(!key||!binId){showToast('⚠️ ต้องมี API Key และ Bin ID ก่อน');return;}
   setSyncBtnState('syncing','กำลังดาวน์โหลด...');
   try{
-    const res=await fetch(`https://api.allorigins.win/raw?url=${gistUrl(gistId)}`,{headers:{'Authorization':`token ${token}`,'X-Requested-With':'XMLHttpRequest'}});
-    if(!res.ok)throw new Error('HTTP '+res.status);
+    const res=await fetch(`${JSONBIN}/b/${binId}/latest`,{headers:{'X-Master-Key':key}});
     const data=await res.json();
-    const content=data.files?.['budget-data.json']?.content;
-    if(!content)throw new Error('ไม่พบข้อมูล');
-    const payload=JSON.parse(content);
+    if(!res.ok)throw new Error(data.message||'HTTP '+res.status);
+    const payload=data.record;
+    if(!payload)throw new Error('ไม่พบข้อมูล');
     if(payload.entries){entries=payload.entries;localStorage.setItem('mybook_v3',JSON.stringify(entries));}
     if(payload.cats){CATS=payload.cats;saveCats(CATS);buildMainCats();}
     localStorage.setItem('sync_last',new Date().toLocaleString('th-TH'));
@@ -564,31 +558,31 @@ function setSyncBtnState(state,text){
 }
 
 function saveToken(){
-  const t=document.getElementById('s-token').value.trim();
-  const g=document.getElementById('s-gistid').value.trim();
-  if(!t){alert('กรุณาใส่ Token');return;}
-  localStorage.setItem('gh_token',t);
-  if(g)localStorage.setItem('gh_gist_id',g);
+  const k=document.getElementById('s-apikey').value.trim();
+  const b=document.getElementById('s-binid').value.trim();
+  if(!k){alert('กรุณาใส่ JSONbin Secret Key');return;}
+  localStorage.setItem('jb_apikey',k);
+  if(b)localStorage.setItem('jb_binid',b);
   updateSyncBtn();showToast('💾 บันทึกแล้ว กำลัง Sync...');
   pushData();
 }
 
 function clearToken(){
-  if(!confirm('ลบ Token ออก?'))return;
-  localStorage.removeItem('gh_token');
-  localStorage.removeItem('gh_gist_id');
-  document.getElementById('s-token').value='';
-  document.getElementById('s-gistid').value='';
+  if(!confirm('ลบการตั้งค่าออก?'))return;
+  localStorage.removeItem('jb_apikey');
+  localStorage.removeItem('jb_binid');
+  document.getElementById('s-apikey').value='';
+  document.getElementById('s-binid').value='';
   updateSyncBtn();renderSyncStatus();showToast('🗑️ ลบแล้ว');
 }
 
 function renderSyncStatus(){
   const el=document.getElementById('sync-status-display');
-  const token=getToken();const gistId=getGistId();const last=localStorage.getItem('sync_last');
-  document.getElementById('s-token').value=token?token.slice(0,8)+'...':'';
-  document.getElementById('s-gistid').value=gistId||'';
-  if(!token){el.innerHTML=`<div class="sync-status-bar warn">⚠️ ยังไม่ได้ตั้งค่า Token — ทำตามขั้นตอนด้านล่าง</div>`;}
-  else if(!gistId){el.innerHTML=`<div class="sync-status-bar warn">🔑 มี Token แล้ว — กด "บันทึกและ Sync ครั้งแรก" เพื่อสร้าง Gist</div>`;}
+  const key=getApiKey();const binId=getBinId();const last=localStorage.getItem('sync_last');
+  document.getElementById('s-apikey').value=key?key.slice(0,10)+'...':'';
+  document.getElementById('s-binid').value=binId||'';
+  if(!key){el.innerHTML=`<div class="sync-status-bar warn">⚠️ ยังไม่ได้ตั้งค่า — ทำตามขั้นตอนด้านล่าง</div>`;}
+  else if(!binId){el.innerHTML=`<div class="sync-status-bar warn">🔑 มี Key แล้ว — กด "บันทึกและ Sync ครั้งแรก" เพื่อสร้าง Bin</div>`;}
   else{el.innerHTML=`<div class="sync-status-bar ok">✅ พร้อม Sync แล้ว${last?' · ล่าสุด: '+last:''}</div>`;}
   const lastEl=document.getElementById('sync-last-time');
   if(lastEl)lastEl.textContent=last?'Sync ล่าสุด: '+last:'ยังไม่เคย Sync';
