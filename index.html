@@ -22,15 +22,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .header{background:var(--white);border-bottom:2px solid var(--pink-border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{font-size:18px;font-weight:900;color:var(--pink);display:flex;align-items:center;gap:8px}
 .logo-dot{width:10px;height:10px;background:#FFBE0B;border-radius:50%}
-.header-right{display:flex;align-items:center;gap:10px}
+.header-right{display:flex;align-items:center;gap:8px}
 .hdate{font-size:12px;color:var(--muted);font-weight:700}
-.sync-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;border:1.5px solid var(--green-border);background:var(--green-light);color:var(--green);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
-.sync-btn:hover{background:var(--green);color:#fff}
-.sync-btn.syncing{border-color:var(--yellow-border);background:var(--yellow-light);color:var(--yellow);animation:pulse 1s infinite}
-.sync-btn.error{border-color:var(--pink-border);background:var(--pink-light);color:#C03870}
-.sync-btn.no-token{border-color:#D0B8B8;background:#F5F0F0;color:var(--muted)}
+.cloud-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;border:1.5px solid var(--green-border);background:var(--green-light);color:var(--green);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap}
+.cloud-btn:hover{background:var(--green);color:#fff}
+.cloud-btn.loading{border-color:var(--yellow-border);background:var(--yellow-light);color:var(--yellow);animation:pulse 1s infinite}
+.cloud-btn.ok{border-color:var(--green-border);background:var(--green);color:#fff}
+.cloud-btn.err{border-color:var(--pink-border);background:var(--pink-light);color:#C03870}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
 
 .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:14px 24px;background:var(--white);border-bottom:2px solid #FFE4EC}
 .sbox{border-radius:var(--radius);padding:12px 14px;text-align:center}
@@ -48,16 +47,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tab:hover{color:var(--pink)}.tab.on{color:var(--pink);border-bottom-color:var(--pink)}
 
 .content{padding:16px 24px}
-
 .fcard{background:var(--white);border-radius:20px;border:2px solid #FFE4EC;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
 .ftitle{font-size:14px;font-weight:900;color:var(--pink);margin-bottom:14px;display:flex;align-items:center;gap:7px}
 
 .type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .ttype{border-radius:12px;padding:11px 8px;font-size:13px;font-weight:800;cursor:pointer;border:2px solid transparent;transition:all .15s;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px}
 .ttype.t-in{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
-.ttype.t-in.sel{background:var(--green);color:#fff;border-color:var(--green)}
+.ttype.t-in.sel{background:var(--green);color:#fff}
 .ttype.t-out{background:var(--pink-light);color:#E05588;border-color:var(--pink-border)}
-.ttype.t-out.sel{background:#E05588;color:#fff;border-color:#E05588}
+.ttype.t-out.sel{background:#E05588;color:#fff}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .fg{display:flex;flex-direction:column;gap:5px}
@@ -65,10 +63,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .finp{border:2px solid #FFE4EC;border-radius:11px;padding:10px 12px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text);background:var(--bg);outline:none;width:100%;transition:border-color .15s}
 .finp:focus{border-color:var(--pink);background:var(--white)}
 .finp::placeholder{color:var(--subtle);font-weight:500}
-.finp[readonly]{opacity:.7;cursor:default}
+.finp[readonly]{opacity:.7}
 select.finp option{background:var(--white);color:var(--text)}
 .addbtn{width:100%;padding:12px;background:var(--pink);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .addbtn:hover{opacity:.87}
+.addbtn:disabled{opacity:.5;cursor:not-allowed}
 
 .ctabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .ctab{padding:6px 12px;border-radius:20px;border:1.5px solid #FFE4EC;background:var(--white);color:var(--muted);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
@@ -78,7 +77,7 @@ select.finp option{background:var(--white);color:var(--text)}
 .brand-box-title{font-size:11px;font-weight:800;color:var(--purple);margin-bottom:8px}
 
 .txns{display:flex;flex-direction:column;gap:8px}
-.txn{background:var(--white);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid #FFE4EC;transition:border-color .15s}
+.txn{background:var(--white);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid #FFE4EC}
 .txn:hover{border-color:var(--pink-border)}
 .txn-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .txn-ico.in{background:var(--green-light)}.txn-ico.out{background:var(--pink-light)}
@@ -101,9 +100,9 @@ select.finp option{background:var(--white);color:var(--text)}
 .rcards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .rcard{background:var(--white);border-radius:16px;border:2px solid #FFE4EC;padding:16px}
 .rcard.full{grid-column:span 2}
-.rclbl{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:10px;letter-spacing:.3px}
+.rclbl{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:10px}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bc{font-size:11px;font-weight:800;color:var(--text);width:95px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bc{font-size:11px;font-weight:800;width:95px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bt{flex:1;height:8px;background:#FFF0F4;border-radius:4px;overflow:hidden}
 .bf{height:100%;border-radius:4px;transition:width .4s}
 .bf.i{background:#48D4A0}.bf.o{background:#FF8EB7}
@@ -112,18 +111,16 @@ select.finp option{background:var(--white);color:var(--text)}
 
 .bp-table{width:100%;border-collapse:collapse}
 .bp-table th{font-size:11px;font-weight:800;color:var(--muted);padding:6px 8px;text-align:left;border-bottom:2px solid #FFE4EC}
-.bp-table td{font-size:12px;font-weight:700;padding:9px 8px;border-bottom:1px solid #FFF0F4;color:var(--text)}
+.bp-table td{font-size:12px;font-weight:700;padding:9px 8px;border-bottom:1px solid #FFF0F4}
 .bp-table tr:last-child td{border-bottom:none}
 .bp-table tr:hover td{background:var(--bg)}
 .profit-pos{color:#0F6E56;font-weight:900}.profit-neg{color:#C03870;font-weight:900}
-.mini-bar{height:6px;border-radius:3px;min-width:4px;display:inline-block}
 .item-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg);border-radius:10px;margin-bottom:5px}
 .item-stats{display:flex;gap:12px}
 .item-stat{text-align:right}
 .item-stat-lbl{font-size:10px;font-weight:700;color:var(--muted)}
 .item-stat-val{font-size:12px;font-weight:900}
 
-/* CATEGORY MANAGER */
 .cm-layout{display:grid;grid-template-columns:220px 1fr;gap:14px}
 .cm-sidebar{display:flex;flex-direction:column;gap:8px}
 .cm-type-btn{border-radius:12px;padding:10px 14px;font-size:12px;font-weight:800;cursor:pointer;border:2px solid transparent;font-family:'Nunito',sans-serif;text-align:left;transition:all .15s;display:flex;align-items:center;gap:7px}
@@ -132,74 +129,57 @@ select.finp option{background:var(--white);color:var(--text)}
 .cm-type-btn.expense{background:var(--pink-light);color:#E05588;border-color:var(--pink-border)}
 .cm-type-btn.expense.sel{background:#E05588;color:#fff}
 .cm-main-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-.cm-main-item{border-radius:12px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid #FFE4EC;background:var(--white);color:var(--text);font-family:'Nunito',sans-serif;text-align:left;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
+.cm-main-item{border-radius:12px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid #FFE4EC;background:var(--white);font-family:'Nunito',sans-serif;text-align:left;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .cm-main-item:hover{border-color:var(--pink-border);color:var(--pink)}
 .cm-main-item.sel{background:var(--pink-light);border-color:var(--pink-border);color:var(--pink)}
 .cm-main-item-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-main-del{font-size:13px;color:var(--subtle);cursor:pointer;padding:2px 4px;border:none;background:none;flex-shrink:0;transition:color .15s}
+.cm-main-del{font-size:13px;color:var(--subtle);cursor:pointer;padding:2px 4px;border:none;background:none;flex-shrink:0}
 .cm-main-del:hover{color:#E05588}
 .cm-panel{background:var(--white);border:2px solid #FFE4EC;border-radius:18px;padding:18px}
 .cm-panel-title{font-size:13px;font-weight:900;color:var(--pink);margin-bottom:14px}
 .cm-add-row{display:flex;gap:8px;margin-bottom:14px}
-.cm-inp{border:2px solid #FFE4EC;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text);background:var(--bg);outline:none;flex:1;transition:border-color .15s}
+.cm-inp{border:2px solid #FFE4EC;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text);background:var(--bg);outline:none;flex:1}
 .cm-inp:focus{border-color:var(--pink);background:var(--white)}
 .cm-inp::placeholder{color:var(--subtle);font-weight:500}
-.cm-add-btn{padding:9px 16px;background:var(--pink);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;transition:opacity .15s}
-.cm-add-btn:hover{opacity:.87}.cm-add-btn.sec{background:var(--green)}
+.cm-add-btn{padding:9px 16px;background:var(--pink);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.cm-add-btn.sec{background:var(--green)}
 .sub-list{display:flex;flex-direction:column;gap:6px}
-.sub-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border-radius:10px;border:1.5px solid #FFE4EC;transition:border-color .15s}
+.sub-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border-radius:10px;border:1.5px solid #FFE4EC}
 .sub-item:hover{border-color:var(--pink-border)}
 .sub-item-emoji{font-size:16px;flex-shrink:0}
-.sub-item-name{flex:1;font-size:13px;font-weight:700;color:var(--text)}
-.sub-toggle-btn{font-size:10px;font-weight:800;padding:3px 8px;border-radius:8px;border:1.5px solid var(--purple-border);background:transparent;color:var(--purple);cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0;transition:all .15s}
-.sub-toggle-btn.on{background:var(--purple);color:#fff;border-color:var(--purple)}
-.sub-del{font-size:13px;color:var(--subtle);cursor:pointer;padding:2px 4px;border:none;background:none;flex-shrink:0;transition:color .15s}
+.sub-item-name{flex:1;font-size:13px;font-weight:700}
+.sub-toggle-btn{font-size:10px;font-weight:800;padding:3px 8px;border-radius:8px;border:1.5px solid var(--purple-border);background:transparent;color:var(--purple);cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0}
+.sub-toggle-btn.on{background:var(--purple);color:#fff}
+.sub-del{font-size:13px;color:var(--subtle);cursor:pointer;padding:2px 4px;border:none;background:none;flex-shrink:0}
 .sub-del:hover{color:#E05588}
 .cm-hint{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:10px;padding:8px 12px;background:var(--yellow-light);border-radius:8px;border:1px solid var(--yellow-border)}
-
-/* SYNC / SETTINGS */
-.sync-setup{background:var(--white);border-radius:20px;border:2px solid #FFE4EC;padding:20px;margin-bottom:14px}
-.sync-status-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:13px;font-weight:800}
-.sync-status-bar.ok{background:var(--green-light);border:1.5px solid var(--green-border);color:var(--green)}
-.sync-status-bar.warn{background:var(--yellow-light);border:1.5px solid var(--yellow-border);color:var(--yellow)}
-.sync-status-bar.err{background:var(--pink-light);border:1.5px solid var(--pink-border);color:#C03870}
-.setting-row{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.setting-label{font-size:11px;font-weight:800;color:var(--muted)}
-.setting-desc{font-size:11px;color:var(--subtle);line-height:1.5;margin-top:2px}
-.save-btn{padding:10px 20px;background:var(--green);color:#fff;border:none;border-radius:11px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .15s}
-.save-btn:hover{opacity:.87}
-.danger-btn{padding:8px 16px;background:var(--pink-light);color:#C03870;border:1.5px solid var(--pink-border);border-radius:11px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
-.danger-btn:hover{background:var(--pink);color:#fff}
-.step-box{background:var(--blue-light);border:1.5px solid var(--blue-border);border-radius:12px;padding:14px 16px;margin-bottom:14px}
-.step-box-title{font-size:12px;font-weight:900;color:var(--blue);margin-bottom:10px}
-.step-item{display:flex;gap:9px;margin-bottom:8px;align-items:flex-start;font-size:12px;color:var(--text);line-height:1.6}
-.step-circle{width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-item a{color:var(--blue);font-weight:800}
-.sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.action-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;border:1.5px solid;transition:all .15s}
-.action-btn.upload{background:var(--green-light);color:var(--green);border-color:var(--green-border)}
-.action-btn.upload:hover{background:var(--green);color:#fff}
-.action-btn.download{background:var(--blue-light);color:var(--blue);border-color:var(--blue-border)}
-.action-btn.download:hover{background:var(--blue);color:#fff}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-family:'Nunito',sans-serif}
-.toast.show{opacity:1}
 
 .empty{text-align:center;padding:24px;color:var(--subtle)}
 .empty-ico{font-size:34px;margin-bottom:7px}
 .empty-txt{font-size:12px;font-weight:700}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-family:'Nunito',sans-serif;white-space:nowrap}
+.toast.show{opacity:1}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,248,240,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:14px}
+.spinner{width:40px;height:40px;border:4px solid #FFE4EC;border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-size:14px;font-weight:800;color:var(--pink)}
 .hidden{display:none!important}
 </style>
 </head>
 <body>
-<div class="app">
 
+<div id="loading-overlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-txt">กำลังโหลดข้อมูล...</div>
+</div>
+
+<div class="app">
 <div class="header">
   <div class="logo"><span class="logo-dot"></span> บัญชีของฉัน 🌸</div>
   <div class="header-right">
     <div class="hdate" id="hdate"></div>
-    <button class="sync-btn no-token" id="sync-btn" onclick="doSync()">
-      <span class="sync-dot"></span>
-      <span id="sync-label">ยังไม่ได้ตั้ง Sync</span>
+    <button class="cloud-btn" id="cloud-btn" onclick="loadData()">
+      <span id="cloud-label">☁️ โหลดใหม่</span>
     </button>
   </div>
 </div>
@@ -216,7 +196,6 @@ select.finp option{background:var(--white);color:var(--text)}
   <button class="tab" onclick="goTab('brand',this)">🏆 กำไรยี่ห้อ</button>
   <button class="tab" onclick="goTab('report',this)">📊 สรุป</button>
   <button class="tab" onclick="goTab('cats',this)">⚙️ หมวด</button>
-  <button class="tab" onclick="goTab('sync',this)">☁️ Sync</button>
 </div>
 
 <div class="content">
@@ -247,14 +226,14 @@ select.finp option{background:var(--white);color:var(--text)}
     </div>
     <div class="g3">
       <div class="fg"><div class="flbl">💰 ราคาต่อชิ้น (฿)</div><input class="finp" type="number" id="f-price" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="fg"><div class="flbl">💵 รวม (฿)</div><input class="finp" type="number" id="f-amount" placeholder="คำนวณอัตโนมัติ" min="0" step="0.01" readonly></div>
+      <div class="fg"><div class="flbl">💵 รวม (฿)</div><input class="finp" type="number" id="f-amount" placeholder="คำนวณอัตโนมัติ" readonly></div>
       <div class="fg"><div class="flbl">📅 วันที่</div><input class="finp" type="date" id="f-date"></div>
     </div>
     <div class="g2" style="margin-bottom:12px">
       <div class="fg"><div class="flbl">📝 หมายเหตุ</div><input class="finp" type="text" id="f-note" placeholder="เช่น ซื้อจากตลาดคอม..."></div>
       <div class="fg"><div class="flbl">🏪 ร้าน / ลูกค้า</div><input class="finp" type="text" id="f-shop" placeholder="เช่น PowerBuy, Shopee"></div>
     </div>
-    <button class="addbtn" onclick="saveIt()">✅ บันทึกเลย!</button>
+    <button class="addbtn" id="save-btn" onclick="saveIt()">✅ บันทึกเลย!</button>
   </div>
   <div class="fcard" style="margin-bottom:0">
     <div class="ftitle">⏰ รายการล่าสุด</div>
@@ -278,7 +257,7 @@ select.finp option{background:var(--white);color:var(--text)}
 <div id="tab-brand" class="hidden">
   <div class="fcard">
     <div class="ftitle">🏆 กำไร/ขาดทุน แยกตามยี่ห้อ</div>
-    <div id="brand-cat-filter" class="fchips" style="margin-bottom:12px"></div>
+    <div id="brand-cat-filter" class="fchips"></div>
     <div id="brand-profit-table"></div>
   </div>
   <div class="fcard" style="margin-bottom:0">
@@ -293,7 +272,7 @@ select.finp option{background:var(--white);color:var(--text)}
     <div class="rcard"><div class="rclbl">💚 รายรับตามหมวด</div><div id="chart-in"></div></div>
     <div class="rcard"><div class="rclbl">🩷 รายจ่ายตามหมวด</div><div id="chart-out"></div></div>
     <div class="rcard full"><div class="rclbl">📊 เปรียบรายเดือน</div><div id="chart-month"></div></div>
-    <div class="rcard full"><div class="rclbl">🏆 กำไรสุทธิแยกยี่ห้อ (Top 10)</div><div id="chart-brand"></div></div>
+    <div class="rcard full"><div class="rclbl">🏆 กำไรสุทธิแยกยี่ห้อ Top 10</div><div id="chart-brand"></div></div>
   </div>
 </div>
 
@@ -303,16 +282,14 @@ select.finp option{background:var(--white);color:var(--text)}
     <div class="ftitle">⚙️ จัดการหมวดหมู่</div>
     <div class="cm-layout">
       <div class="cm-sidebar">
-        <button class="cm-type-btn income sel" id="cm-btn-income" onclick="cmSetType('income',this)">💚 รายรับ</button>
-        <button class="cm-type-btn expense" id="cm-btn-expense" onclick="cmSetType('expense',this)">🩷 รายจ่าย</button>
+        <button class="cm-type-btn income sel" id="cm-btn-income" onclick="cmSetType('income')">💚 รายรับ</button>
+        <button class="cm-type-btn expense" id="cm-btn-expense" onclick="cmSetType('expense')">🩷 รายจ่าย</button>
         <div style="margin-top:8px;font-size:11px;font-weight:800;color:var(--muted)">หมวดหลัก</div>
         <div id="cm-main-list" class="cm-main-list"></div>
-        <div style="margin-top:6px">
-          <div class="cm-add-row" style="flex-direction:column;gap:6px">
-            <input class="cm-inp" type="text" id="cm-new-main-emoji" placeholder="🛒 Emoji" style="width:100%">
-            <input class="cm-inp" type="text" id="cm-new-main-name" placeholder="ชื่อหมวดหลัก" style="width:100%">
-            <button class="cm-add-btn" style="width:100%" onclick="cmAddMain()">+ เพิ่มหมวดหลัก</button>
-          </div>
+        <div style="margin-top:6px;display:flex;flex-direction:column;gap:6px">
+          <input class="cm-inp" type="text" id="cm-new-main-emoji" placeholder="🛒 Emoji">
+          <input class="cm-inp" type="text" id="cm-new-main-name" placeholder="ชื่อหมวดหลัก">
+          <button class="cm-add-btn" onclick="cmAddMain()">+ เพิ่มหมวดหลัก</button>
         </div>
       </div>
       <div id="cm-panel" class="cm-panel">
@@ -323,64 +300,71 @@ select.finp option{background:var(--white);color:var(--text)}
   </div>
 </div>
 
-<!-- TAB: SYNC -->
-<div id="tab-sync" class="hidden">
-
-  <div class="sync-setup">
-    <div class="ftitle">☁️ Sync คอม ↔ มือถือ</div>
-
-    <div style="background:var(--green-light);border:1.5px solid var(--green-border);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#0F6E56;line-height:1.7;font-weight:700">
-      ✅ วิธีนี้ง่ายที่สุด ไม่ต้องสมัครอะไร ไม่มีปัญหา CORS<br>
-      <span style="font-weight:500;font-size:12px">คัดลอกข้อมูลจากเครื่องหนึ่ง → วางในอีกเครื่อง</span>
-    </div>
-
-    <!-- EXPORT -->
-    <div class="fcard" style="margin-bottom:14px">
-      <div class="ftitle">📤 ส่งออกข้อมูล (จากเครื่องนี้)</div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:700">กดปุ่มด้านล่าง → คัดลอกข้อมูลทั้งหมด → นำไปวางในอีกเครื่อง</p>
-      <button class="addbtn" style="margin-bottom:10px" onclick="exportData()">📋 คัดลอกข้อมูลทั้งหมด</button>
-      <textarea id="export-box" class="finp" rows="4" readonly placeholder="กดปุ่มด้านบนเพื่อสร้างข้อมูล..." style="font-size:11px;font-family:monospace;resize:none"></textarea>
-    </div>
-
-    <!-- IMPORT -->
-    <div class="fcard" style="margin-bottom:0">
-      <div class="ftitle">📥 นำเข้าข้อมูล (จากเครื่องอื่น)</div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:700">วางข้อมูลที่คัดลอกมาจากอีกเครื่อง แล้วกดนำเข้า</p>
-      <textarea id="import-box" class="finp" rows="4" placeholder="วางข้อมูลที่คัดลอกมาจากอีกเครื่องที่นี่..." style="font-size:11px;font-family:monospace;resize:none;margin-bottom:10px"></textarea>
-      <button class="addbtn" style="background:#534AB7" onclick="importData()">✅ นำเข้าข้อมูล</button>
-    </div>
-  </div>
-
-</div>
-
-</div><!-- content -->
-</div><!-- app -->
-
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
+const API = 'https://script.google.com/macros/s/AKfycbyUu1NraCqfJAb2byyMV1XDHaRfutdXlO3PgY_WJBK5KV1-b_E1FAvfLLDArDWJxdVG/exec';
+
 const DEFAULT_CATS = {
   income:{"🛒 ขายสินค้า":{subs:["Notebook/Laptop","Desktop/PC","Tablet","สมาร์ทโฟน","อุปกรณ์เสริม","สินค้าอื่น"],productSubs:["Notebook/Laptop","Desktop/PC","Tablet","สมาร์ทโฟน","อุปกรณ์เสริม","สินค้าอื่น"]},"💵 รายได้อื่น":{subs:["เงินเดือน","โบนัส","ดอกเบี้ย","ให้เช่า","รายได้เสริม"],productSubs:[]}},
   expense:{"📦 ต้นทุนสินค้า":{subs:["Notebook/Laptop","Desktop/PC","Tablet","สมาร์ทโฟน","อุปกรณ์เสริม","สินค้าอื่น"],productSubs:["Notebook/Laptop","Desktop/PC","Tablet","สมาร์ทโฟน","อุปกรณ์เสริม","สินค้าอื่น"]},"🍜 ค่ากิน/อาหาร":{subs:["มื้อเช้า","มื้อกลางวัน","มื้อเย็น","ของว่าง","เครื่องดื่ม"],productSubs:[]},"🏷️ ค่าใช้จ่ายทั่วไป":{subs:["ค่าเช่า","ค่าไฟ/น้ำ","ค่าเน็ต","ค่าเดินทาง","อื่นๆ"],productSubs:[]},"🛍️ ซื้อของใช้":{subs:["ของใช้ส่วนตัว","เครื่องใช้ในบ้าน","เสื้อผ้า","อื่นๆ"],productSubs:[]}}
 };
-const ICONS = {"Notebook/Laptop":"💻","Desktop/PC":"🖥️","Tablet":"📱","สมาร์ทโฟน":"📲","อุปกรณ์เสริม":"🖱️","สินค้าอื่น":"📦","เงินเดือน":"💵","โบนัส":"🎁","ดอกเบี้ย":"📈","ให้เช่า":"🏠","รายได้เสริม":"✨","มื้อเช้า":"🌅","มื้อกลางวัน":"☀️","มื้อเย็น":"🌙","ของว่าง":"🍿","เครื่องดื่ม":"☕","ค่าเช่า":"🏠","ค่าไฟ/น้ำ":"💡","ค่าเน็ต":"🌐","ค่าเดินทาง":"🚗","อื่นๆ":"📝","ของใช้ส่วนตัว":"🪥","เครื่องใช้ในบ้าน":"🏠","เสื้อผ้า":"👕"};
+const ICONS={"Notebook/Laptop":"💻","Desktop/PC":"🖥️","Tablet":"📱","สมาร์ทโฟน":"📲","อุปกรณ์เสริม":"🖱️","สินค้าอื่น":"📦","เงินเดือน":"💵","โบนัส":"🎁","ดอกเบี้ย":"📈","ให้เช่า":"🏠","รายได้เสริม":"✨","มื้อเช้า":"🌅","มื้อกลางวัน":"☀️","มื้อเย็น":"🌙","ของว่าง":"🍿","เครื่องดื่ม":"☕","ค่าเช่า":"🏠","ค่าไฟ/น้ำ":"💡","ค่าเน็ต":"🌐","ค่าเดินทาง":"🚗","อื่นๆ":"📝","ของใช้ส่วนตัว":"🪥","เครื่องใช้ในบ้าน":"🏠","เสื้อผ้า":"👕"};
 
 function loadCats(){try{return JSON.parse(localStorage.getItem('cats_v2'))||DEFAULT_CATS;}catch(e){return DEFAULT_CATS;}}
 function saveCats(c){localStorage.setItem('cats_v2',JSON.stringify(c));}
+
 let CATS=loadCats();
-let entries=JSON.parse(localStorage.getItem('mybook_v3')||'[]');
+let entries=[];
 let ctype='income',mainCat='',subCat='',fmode='all',brandFilter='all';
 let cmType='income',cmMain='';
+let saving=false;
 
-function getProductSubs(){const all=[];Object.values(CATS).forEach(m=>Object.values(m).forEach(d=>{if(d.productSubs)all.push(...d.productSubs);}));return[...new Set(all)];}
-function isProductSub(s){for(const m of Object.values(CATS))for(const d of Object.values(m))if(d.productSubs&&d.productSubs.includes(s))return true;return false;}
+// ===== GOOGLE SHEETS API =====
+async function loadData(){
+  setCloudBtn('loading','⏳ กำลังโหลด...');
+  try{
+    const res=await fetch(API+'?t='+Date.now());
+    const text=await res.text();
+    let data=[];
+    try{data=JSON.parse(text);}catch(e){data=[];}
+    if(Array.isArray(data)) entries=data;
+    refresh();
+    setCloudBtn('ok','✅ โหลดแล้ว');
+    setTimeout(()=>setCloudBtn('','☁️ โหลดใหม่'),2000);
+    showToast('📥 โหลดข้อมูลล่าสุดแล้ว!');
+  }catch(err){
+    setCloudBtn('err','❌ โหลดไม่ได้');
+    setTimeout(()=>setCloudBtn('','☁️ โหลดใหม่'),3000);
+    showToast('❌ โหลดไม่ได้: '+err.message);
+  }
+  document.getElementById('loading-overlay').classList.add('hidden');
+}
 
+async function saveToCloud(data){
+  const res=await fetch(API,{
+    method:'POST',
+    body:JSON.stringify(data),
+    headers:{'Content-Type':'text/plain'}
+  });
+  return res;
+}
+
+// ===== INIT =====
 function init(){
   const d=new Date();
   document.getElementById('hdate').textContent=d.toLocaleDateString('th-TH',{weekday:'short',month:'short',day:'numeric'});
   document.getElementById('f-date').value=d.toISOString().split('T')[0];
   ['f-price','f-qty'].forEach(id=>document.getElementById(id).addEventListener('input',calcTotal));
-  setType('income');refresh();updateSyncBtn();
+  setType('income');
+  loadData();
+}
+
+function setCloudBtn(state,text){
+  const btn=document.getElementById('cloud-btn');
+  btn.className='cloud-btn'+(state?' '+state:'');
+  document.getElementById('cloud-label').textContent=text;
 }
 
 function calcTotal(){
@@ -389,27 +373,72 @@ function calcTotal(){
   document.getElementById('f-amount').value=p>0?(p*q).toFixed(2):'';
 }
 
+// ===== TYPE / CATS =====
 function setType(t){ctype=t;document.getElementById('btn-in').classList.toggle('sel',t==='income');document.getElementById('btn-out').classList.toggle('sel',t==='expense');mainCat='';subCat='';buildMainCats();}
-function buildMainCats(){const el=document.getElementById('main-cat-tabs');const cats=Object.keys(CATS[ctype]||{});if(!cats.length){el.innerHTML='<span style="font-size:12px;color:var(--muted)">ยังไม่มีหมวดหลัก</span>';return;}mainCat=cats[0];el.innerHTML=cats.map(c=>`<button class="ctab${c===mainCat?' on':''}" onclick="setMainCat(this,'${c.replace(/'/g,"\\'")}',event)">${c}</button>`).join('');buildSubCats();}
+function getProductSubs(){const all=[];Object.values(CATS).forEach(m=>Object.values(m).forEach(d=>{if(d.productSubs)all.push(...d.productSubs);}));return[...new Set(all)];}
+function isProductSub(s){for(const m of Object.values(CATS))for(const d of Object.values(m))if(d.productSubs&&d.productSubs.includes(s))return true;return false;}
+
+function buildMainCats(){
+  const el=document.getElementById('main-cat-tabs');
+  const cats=Object.keys(CATS[ctype]||{});
+  if(!cats.length){el.innerHTML='<span style="font-size:12px;color:var(--muted)">ยังไม่มีหมวดหลัก</span>';return;}
+  mainCat=cats[0];
+  el.innerHTML=cats.map(c=>`<button class="ctab${c===mainCat?' on':''}" onclick="setMainCat(this,'${c.replace(/'/g,"\\'")}',event)">${c}</button>`).join('');
+  buildSubCats();
+}
 function setMainCat(btn,c,e){if(e)e.stopPropagation();mainCat=c;document.querySelectorAll('#main-cat-tabs .ctab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildSubCats();}
-function buildSubCats(){const data=CATS[ctype]&&CATS[ctype][mainCat];const subs=data?data.subs:[];const el=document.getElementById('sub-cat-tabs');const wrap=document.getElementById('sub-cat-wrap');const bs=document.getElementById('brand-section');if(!subs||!subs.length){wrap.classList.add('hidden');subCat='';bs.classList.add('hidden');return;}wrap.classList.remove('hidden');subCat=subs[0];el.innerHTML=subs.map(s=>`<button class="ctab${s===subCat?' on':''}" onclick="setSubCat(this,'${s.replace(/'/g,"\\'")}',event)">${ICONS[s]||''} ${s}</button>`).join('');updateBrandSection();}
+function buildSubCats(){
+  const data=CATS[ctype]&&CATS[ctype][mainCat];const subs=data?data.subs:[];
+  const el=document.getElementById('sub-cat-tabs');const wrap=document.getElementById('sub-cat-wrap');const bs=document.getElementById('brand-section');
+  if(!subs||!subs.length){wrap.classList.add('hidden');subCat='';bs.classList.add('hidden');return;}
+  wrap.classList.remove('hidden');subCat=subs[0];
+  el.innerHTML=subs.map(s=>`<button class="ctab${s===subCat?' on':''}" onclick="setSubCat(this,'${s.replace(/'/g,"\\'")}',event)">${ICONS[s]||''} ${s}</button>`).join('');
+  updateBrandSection();
+}
 function setSubCat(btn,s,e){if(e)e.stopPropagation();subCat=s;document.querySelectorAll('#sub-cat-tabs .ctab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');updateBrandSection();}
 function updateBrandSection(){const el=document.getElementById('brand-section');isProductSub(subCat)?el.classList.remove('hidden'):el.classList.add('hidden');}
 
-function saveIt(){
+// ===== SAVE =====
+async function saveIt(){
+  if(saving)return;
   const price=parseFloat(document.getElementById('f-price').value)||0;
   const qty=parseInt(document.getElementById('f-qty').value)||1;
   const amount=price>0?price*qty:parseFloat(document.getElementById('f-amount').value)||0;
-  if(!amount||amount<=0){alert('กรุณาใส่ราคา');document.getElementById('f-price').focus();return;}
-  entries.unshift({id:Date.now(),type:ctype,mainCat,subCat,brand:document.getElementById('f-brand').value.trim(),model:document.getElementById('f-model').value.trim(),qty,priceEach:price||amount,amount,note:document.getElementById('f-note').value.trim(),shop:document.getElementById('f-shop').value.trim(),date:document.getElementById('f-date').value});
-  localStorage.setItem('mybook_v3',JSON.stringify(entries));
-  ['f-brand','f-model','f-note','f-shop','f-price'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-qty').value='1';document.getElementById('f-amount').value='';
-  refresh();showToast('✅ บันทึกแล้ว!');
+  if(!amount||amount<=0){showToast('⚠️ กรุณาใส่ราคา');document.getElementById('f-price').focus();return;}
+  const entry={
+    id:Date.now(),type:ctype,mainCat,subCat,
+    brand:document.getElementById('f-brand').value.trim(),
+    model:document.getElementById('f-model').value.trim(),
+    qty,priceEach:price||amount,amount,
+    note:document.getElementById('f-note').value.trim(),
+    shop:document.getElementById('f-shop').value.trim(),
+    date:document.getElementById('f-date').value
+  };
+  saving=true;
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.textContent='⏳ กำลังบันทึก...';
+  try{
+    const newEntries=[entry,...entries];
+    await saveToCloud(newEntries);
+    entries=newEntries;
+    ['f-brand','f-model','f-note','f-shop','f-price'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-qty').value='1';document.getElementById('f-amount').value='';
+    refresh();showToast('✅ บันทึกลง Google Sheets แล้ว!');
+  }catch(err){showToast('❌ บันทึกไม่ได้: '+err.message);}
+  saving=false;btn.disabled=false;btn.textContent='✅ บันทึกเลย!';
 }
 
-function delIt(id){entries=entries.filter(e=>e.id!==id);localStorage.setItem('mybook_v3',JSON.stringify(entries));refresh();}
+async function delIt(id){
+  if(!confirm('ลบรายการนี้?'))return;
+  const newEntries=entries.filter(e=>e.id!==id);
+  try{
+    await saveToCloud(newEntries);
+    entries=newEntries;refresh();showToast('🗑️ ลบแล้ว');
+  }catch(err){showToast('❌ ลบไม่ได้: '+err.message);}
+}
+
 function fmt(n){return Number(n).toLocaleString('th-TH',{maximumFractionDigits:0});}
+
 function refresh(){
   const inc=entries.filter(e=>e.type==='income').reduce((s,e)=>s+e.amount,0);
   const exp=entries.filter(e=>e.type==='expense').reduce((s,e)=>s+e.amount,0);
@@ -429,6 +458,7 @@ function renderRecent(){const el=document.getElementById('recent-list');const r=
 function renderFull(){const el=document.getElementById('full-list');const f=fmode==='all'?entries:entries.filter(e=>e.type===fmode);el.innerHTML=f.length?f.map(txnCard).join(''):empty();}
 function doFilter(m,btn){fmode=m;document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderFull();}
 
+// ===== BRAND PROFIT =====
 function renderBrandProfit(){
   const ps=getProductSubs();const prodE=entries.filter(e=>ps.includes(e.subCat));
   const cats=[...new Set(prodE.map(e=>e.subCat))];
@@ -440,11 +470,12 @@ function renderBrandProfit(){
   if(!brands.length){tableEl.innerHTML=empty();document.getElementById('model-detail').innerHTML=empty();return;}
   const maxAbs=Math.max(...brands.map(b=>Math.abs(b.profit)),1);
   const ranks=['🥇','🥈','🥉'];
-  tableEl.innerHTML=`<table class="bp-table"><thead><tr><th>#</th><th>ยี่ห้อ</th><th style="text-align:right">ยอดขาย</th><th style="text-align:right">ต้นทุน</th><th style="text-align:right">กำไร</th><th>กราฟ</th></tr></thead><tbody>${brands.map((b,i)=>{const pct=Math.round(Math.abs(b.profit)/maxAbs*100);const isPos=b.profit>=0;return`<tr><td>${i<3?ranks[i]:i+1}</td><td><strong>${b.name}</strong><br><span style="font-size:10px;color:var(--muted)">ขาย ${b.soldQty}/ซื้อ ${b.buyQty} ชิ้น</span></td><td style="text-align:right;color:#0F6E56">+${fmt(b.income)}฿</td><td style="text-align:right;color:#C03870">-${fmt(b.expense)}฿</td><td style="text-align:right" class="${isPos?'profit-pos':'profit-neg'}">${isPos?'+':''}${fmt(b.profit)}฿</td><td><div class="mini-bar" style="width:${pct}px;max-width:60px;background:${isPos?'#48D4A0':'#FF8EB7'}"></div></td></tr>`;}).join('')}</tbody></table>`;
+  tableEl.innerHTML=`<table class="bp-table"><thead><tr><th>#</th><th>ยี่ห้อ</th><th style="text-align:right">ยอดขาย</th><th style="text-align:right">ต้นทุน</th><th style="text-align:right">กำไร</th></tr></thead><tbody>${brands.map((b,i)=>{const isPos=b.profit>=0;return`<tr><td>${i<3?ranks[i]:i+1}</td><td><strong>${b.name}</strong><br><span style="font-size:10px;color:var(--muted)">ขาย ${b.soldQty}/ซื้อ ${b.buyQty} ชิ้น</span></td><td style="text-align:right;color:#0F6E56">+${fmt(b.income)}฿</td><td style="text-align:right;color:#C03870">-${fmt(b.expense)}฿</td><td style="text-align:right" class="${isPos?'profit-pos':'profit-neg'}">${isPos?'+':''}${fmt(b.profit)}฿</td></tr>`;}).join('')}</tbody></table>`;
   document.getElementById('model-detail').innerHTML=brands.map(b=>{const mds=Object.entries(b.models).map(([m,v])=>({name:m,...v,profit:v.income-v.expense})).sort((a,b2)=>b2.profit-a.profit);return`<div style="margin-bottom:14px"><div style="font-size:13px;font-weight:900;color:var(--pink);margin-bottom:7px">🏷️ ${b.name}</div>${mds.map(m=>`<div class="item-row"><div style="font-size:12px;font-weight:800">📌 ${m.name}</div><div class="item-stats"><div class="item-stat"><div class="item-stat-lbl">ยอดขาย</div><div class="item-stat-val" style="color:#0F6E56">+${fmt(m.income)}฿</div></div><div class="item-stat"><div class="item-stat-lbl">ต้นทุน</div><div class="item-stat-val" style="color:#C03870">-${fmt(m.expense)}฿</div></div><div class="item-stat"><div class="item-stat-lbl">กำไร</div><div class="item-stat-val ${m.profit>=0?'profit-pos':'profit-neg'}">${m.profit>=0?'+':''}${fmt(m.profit)}฿</div></div></div></div>`).join('')}</div>`;}).join('');
 }
 function setBrandFilter(c,btn){brandFilter=c==='ทั้งหมด'?'all':c;document.querySelectorAll('#brand-cat-filter .fchip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderBrandProfit();}
 
+// ===== REPORT =====
 function renderReport(){
   const cc=(type,id)=>{const el=document.getElementById(id);const f=entries.filter(e=>e.type===type);if(!f.length){el.innerHTML='<div style="text-align:center;color:var(--subtle);font-size:12px;padding:10px">ยังไม่มีข้อมูล</div>';return;}const m={};f.forEach(e=>{const k=e.mainCat||type;m[k]=(m[k]||0)+e.amount;});const s=Object.entries(m).sort((a,b)=>b[1]-a[1]);const mx=s[0][1];const cls=type==='income'?'i':'o';el.innerHTML=s.map(([c,v])=>`<div class="bar-row"><div class="bc" title="${c}">${c}</div><div class="bt"><div class="bf ${cls}" style="width:${Math.round(v/mx*100)}%"></div></div><div class="bv ${cls}">${fmt(v)}฿</div></div>`).join('');};
   cc('income','chart-in');cc('expense','chart-out');
@@ -456,92 +487,27 @@ function renderReport(){
   else{const mx3=Math.max(...brs.map(b=>Math.abs(b.profit)),1);bel.innerHTML=brs.map(b=>`<div class="bar-row"><div class="bc" title="${b.name}">${b.name}</div><div class="bt" style="background:${b.profit>=0?'#E8FFF4':'#FFF0F4'}"><div class="bf" style="width:${Math.round(Math.abs(b.profit)/mx3*100)}%;background:${b.profit>=0?'#48D4A0':'#FF8EB7'}"></div></div><div class="bv ${b.profit>=0?'i':'o'}">${b.profit>=0?'+':''}${fmt(b.profit)}฿</div></div>`).join('');}
 }
 
-// CATEGORY MANAGER
+// ===== CATEGORY MANAGER =====
 function cmSetType(t){cmType=t;cmMain='';document.getElementById('cm-btn-income').classList.toggle('sel',t==='income');document.getElementById('cm-btn-expense').classList.toggle('sel',t==='expense');renderCmMainList();renderCmPanel();}
 function renderCmMainList(){const el=document.getElementById('cm-main-list');const cats=Object.keys(CATS[cmType]||{});if(!cats.length){el.innerHTML='<div style="font-size:11px;color:var(--subtle);padding:6px">ยังไม่มีหมวดหลัก</div>';return;}el.innerHTML=cats.map(c=>`<button class="cm-main-item${c===cmMain?' sel':''}" onclick="cmSelectMain('${c.replace(/'/g,"\\'")}')"><span class="cm-main-item-name">${c}</span><button class="cm-main-del" onclick="cmDelMain(event,'${c.replace(/'/g,"\\'")}')">✕</button></button>`).join('');}
 function cmSelectMain(c){cmMain=c;renderCmMainList();renderCmPanel();}
 function cmDelMain(e,c){e.stopPropagation();if(!confirm(`ลบหมวดหลัก "${c}"?`))return;delete CATS[cmType][c];saveCats(CATS);if(cmMain===c)cmMain='';renderCmMainList();renderCmPanel();buildMainCats();}
-function cmAddMain(){const emoji=document.getElementById('cm-new-main-emoji').value.trim();const name=document.getElementById('cm-new-main-name').value.trim();if(!name){alert('กรุณาใส่ชื่อ');return;}const fullName=(emoji?emoji+' ':'')+name;if(!CATS[cmType])CATS[cmType]={};if(CATS[cmType][fullName]){alert('มีหมวดนี้แล้ว');return;}CATS[cmType][fullName]={subs:[],productSubs:[]};saveCats(CATS);document.getElementById('cm-new-main-emoji').value='';document.getElementById('cm-new-main-name').value='';cmMain=fullName;renderCmMainList();renderCmPanel();buildMainCats();}
-function renderCmPanel(){const tEl=document.getElementById('cm-panel-title');const bEl=document.getElementById('cm-panel-body');if(!cmMain||!CATS[cmType]||!CATS[cmType][cmMain]){tEl.textContent='เลือกหมวดหลักด้านซ้าย';bEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">👈 กดเลือกหมวดหลัก</div>';return;}const data=CATS[cmType][cmMain];const subs=data.subs||[];const ps=data.productSubs||[];tEl.textContent=`หมวดย่อยใน ${cmMain}`;bEl.innerHTML=`<div class="cm-hint">💡 ปุ่ม 🏷️ สินค้า = แสดงช่องยี่ห้อ/รุ่น และนับในรายงานกำไร</div><div class="cm-add-row" style="margin-bottom:12px"><input class="cm-inp" type="text" id="cm-sub-emoji" placeholder="📦"><input class="cm-inp" type="text" id="cm-sub-name" placeholder="ชื่อหมวดย่อย" style="flex:2"><button class="cm-add-btn sec" onclick="cmAddSub()">+ เพิ่ม</button></div><div class="sub-list">${subs.length?subs.map(s=>{const ip=ps.includes(s);return`<div class="sub-item"><span class="sub-item-emoji">${ICONS[s]||'📝'}</span><span class="sub-item-name">${s}</span><button class="sub-toggle-btn${ip?' on':''}" onclick="cmToggleProduct('${s.replace(/'/g,"\\'")}',this)">🏷️ สินค้า</button><button class="sub-del" onclick="cmDelSub('${s.replace(/'/g,"\\'")}')">✕</button></div>`;}).join(''):'<div style="text-align:center;padding:14px;font-size:12px;color:var(--subtle)">ยังไม่มีหมวดย่อย</div>'}</div>`;}
+function cmAddMain(){const emoji=document.getElementById('cm-new-main-emoji').value.trim();const name=document.getElementById('cm-new-main-name').value.trim();if(!name){alert('กรุณาใส่ชื่อ');return;}const fn=(emoji?emoji+' ':'')+name;if(!CATS[cmType])CATS[cmType]={};if(CATS[cmType][fn]){alert('มีแล้ว');return;}CATS[cmType][fn]={subs:[],productSubs:[]};saveCats(CATS);document.getElementById('cm-new-main-emoji').value='';document.getElementById('cm-new-main-name').value='';cmMain=fn;renderCmMainList();renderCmPanel();buildMainCats();}
+function renderCmPanel(){const tEl=document.getElementById('cm-panel-title');const bEl=document.getElementById('cm-panel-body');if(!cmMain||!CATS[cmType]||!CATS[cmType][cmMain]){tEl.textContent='เลือกหมวดหลักด้านซ้าย';bEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">👈 กดเลือกหมวดหลัก</div>';return;}const data=CATS[cmType][cmMain];const subs=data.subs||[];const ps=data.productSubs||[];tEl.textContent=`หมวดย่อยใน ${cmMain}`;bEl.innerHTML=`<div class="cm-hint">💡 ปุ่ม 🏷️ สินค้า = แสดงช่องยี่ห้อ/รุ่น</div><div class="cm-add-row" style="margin-bottom:12px"><input class="cm-inp" type="text" id="cm-sub-emoji" placeholder="📦"><input class="cm-inp" type="text" id="cm-sub-name" placeholder="ชื่อหมวดย่อย" style="flex:2"><button class="cm-add-btn sec" onclick="cmAddSub()">+ เพิ่ม</button></div><div class="sub-list">${subs.length?subs.map(s=>{const ip=ps.includes(s);return`<div class="sub-item"><span class="sub-item-emoji">${ICONS[s]||'📝'}</span><span class="sub-item-name">${s}</span><button class="sub-toggle-btn${ip?' on':''}" onclick="cmToggleProduct('${s.replace(/'/g,"\\'")}',this)">🏷️ สินค้า</button><button class="sub-del" onclick="cmDelSub('${s.replace(/'/g,"\\'")}')">✕</button></div>`;}).join(''):'<div style="text-align:center;padding:14px;font-size:12px;color:var(--subtle)">ยังไม่มีหมวดย่อย</div>'}</div>`;}
 function cmAddSub(){const emoji=document.getElementById('cm-sub-emoji').value.trim();const name=document.getElementById('cm-sub-name').value.trim();if(!name){alert('กรุณาใส่ชื่อ');return;}const fn=(emoji?emoji+' ':'')+name;const data=CATS[cmType][cmMain];if(!data)return;if(data.subs.includes(fn)){alert('มีแล้ว');return;}data.subs.push(fn);saveCats(CATS);document.getElementById('cm-sub-emoji').value='';document.getElementById('cm-sub-name').value='';renderCmPanel();buildMainCats();}
 function cmDelSub(s){if(!confirm(`ลบ "${s}"?`))return;const data=CATS[cmType][cmMain];data.subs=data.subs.filter(x=>x!==s);data.productSubs=(data.productSubs||[]).filter(x=>x!==s);saveCats(CATS);renderCmPanel();buildMainCats();}
 function cmToggleProduct(s,btn){const data=CATS[cmType][cmMain];if(!data.productSubs)data.productSubs=[];const idx=data.productSubs.indexOf(s);if(idx>=0){data.productSubs.splice(idx,1);btn.classList.remove('on');}else{data.productSubs.push(s);btn.classList.add('on');}saveCats(CATS);}
 
-// ===== GITHUB GIST SYNC =====
-function getToken(){return localStorage.getItem('gh_token')||'';}
-function getGistId(){return localStorage.getItem('gh_gist_id')||'';}
-
-function updateSyncBtn(){
-  const btn=document.getElementById('sync-btn');
-  const lbl=document.getElementById('sync-label');
-  const key=getApiKey();
-  if(!key){btn.className='sync-btn no-token';lbl.textContent='ตั้งค่า Sync';}
-  else{btn.className='sync-btn';lbl.textContent='Sync ☁️';}
-}
-
-function doSync(){
-  if(!getApiKey()){goTab('sync',document.querySelectorAll('.tab')[5]);return;}
-  pushData();
-}
-
-// ===== SIMPLE EXPORT / IMPORT SYNC =====
-function exportData(){
-  const payload={
-    entries:JSON.parse(localStorage.getItem('mybook_v3')||'[]'),
-    cats:JSON.parse(localStorage.getItem('cats_v2')||'{}'),
-    updated:new Date().toISOString()
-  };
-  const json=JSON.stringify(payload);
-  const box=document.getElementById('export-box');
-  box.value=json;
-  box.select();
-  try{
-    navigator.clipboard.writeText(json).then(()=>showToast('📋 คัดลอกแล้ว! ไปวางในอีกเครื่องได้เลย'));
-  }catch(e){
-    document.execCommand('copy');
-    showToast('📋 คัดลอกแล้ว! ไปวางในอีกเครื่องได้เลย');
-  }
-}
-
-function importData(){
-  const raw=document.getElementById('import-box').value.trim();
-  if(!raw){showToast('⚠️ กรุณาวางข้อมูลก่อน');return;}
-  try{
-    const payload=JSON.parse(raw);
-    if(!payload.entries&&!payload.cats)throw new Error('ข้อมูลไม่ถูกต้อง');
-    if(payload.entries){entries=payload.entries;localStorage.setItem('mybook_v3',JSON.stringify(entries));}
-    if(payload.cats){CATS=payload.cats;saveCats(CATS);buildMainCats();}
-    refresh();
-    document.getElementById('import-box').value='';
-    showToast('✅ นำเข้าสำเร็จ! ข้อมูลอัปเดตแล้ว');
-  }catch(e){showToast('❌ ข้อมูลผิดพลาด ลองใหม่อีกครั้ง');}
-}
-
-function updateSyncBtn(){
-  const btn=document.getElementById('sync-btn');
-  const lbl=document.getElementById('sync-label');
-  btn.className='sync-btn';
-  lbl.textContent='ส่งออก ☁️';
-}
-function doSync(){goTab('sync',document.querySelectorAll('.tab')[5]);}
-function renderSyncStatus(){}
-function saveToken(){}
-function clearToken(){}
-
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
 function goTab(name,btn){
-  ['add','list','brand','report','cats','sync'].forEach(t=>document.getElementById('tab-'+t).classList.add('hidden'));
+  ['add','list','brand','report','cats'].forEach(t=>document.getElementById('tab-'+t).classList.add('hidden'));
   document.getElementById('tab-'+name).classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   if(name==='report')renderReport();
   if(name==='brand')renderBrandProfit();
   if(name==='cats'){cmType='income';cmMain='';document.getElementById('cm-btn-income').classList.add('sel');document.getElementById('cm-btn-expense').classList.remove('sel');renderCmMainList();renderCmPanel();}
-  if(name==='sync')renderSyncStatus();
 }
 
 init();
